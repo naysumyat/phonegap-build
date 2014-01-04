@@ -4,8 +4,49 @@
 </head>
 <body>
 <h1>Hello Phonegap </h1>
+<button class="load-data"> Load </button>
+<hr>
+<div id="result">
+	<span id="title"> </span> 
+	<span id="desc"></span>
+</div>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+	(function($){
+		var Citys = "London,uk";
+		var URL = "http://api.openweathermap.org/data/2.5/weather?q="+Citys;
+
+		function onSuccessCall(data){
+			var title = data.weather[0].main;
+			var desc  = data.weather[0].description;
+				$("#title").text(title);
+				$("#desc").text(desc);
+		}
+		function onErrorCall(){
+			alert("Cannot connect to server!");
+		}
+        
+        $(".load-data").on("click", function(){
+        	var me = $(this);
+                me.text("loading...");
 
 
-<script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+            $.ajax({
+			  dataType: "jsonp",
+			  url: URL,
+			  data: {clientid : 21090},
+			  success: onSuccessCall,
+			  error : onErrorCall,
+			  complete: function(){
+			  	me.text("load");
+			  }
+			});
+
+
+        });
+
+	})(jQuery);
+
+</script>
 </body>
 </html>
